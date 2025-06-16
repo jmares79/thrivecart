@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
-use App\ProductLogic;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function __construct(protected readonly ProductLogic $productLogic) {}
-
     public function index()
     {
-        //
+        return response()->json(Product::all());
     }
 
     /**
@@ -20,22 +18,34 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
-        //
+        $product = Product::create([
+            'name' => $request->input('name'),
+            'code' => $request->input('code'),
+            'price' => $request->input('price'),
+        ]);
+
+        return response()->json([
+            'message' => 'Product created successfully',
+            'product' => $product,
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Request $request, Product $product)
     {
-        //
+        return response()->json($product);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(ProductStoreRequest $request, Product $product)
     {
-        //
+        $product->update([
+            'name' => $request->input('name'),
+            'code' => $request->input('code'),
+            'price' => $request->input('price'),
+        ]);
+
+        return response()->json([
+            'message' => 'Product updated successfully',
+            'product' => $product,
+        ]);
     }
 }
