@@ -17,7 +17,22 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('status')->default('pending');
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+        });
+
+        Schema::create('order_product', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
+
+            $table->foreignId('order_id');
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->float('amount');
+
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 
@@ -27,5 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
+        Schema::dropIfExists('order_product');
     }
 };

@@ -8,17 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Order extends Model
 {
     protected $fillable = [
-        'product_id',
-        'amount',
+        'description',
         'status',
-    ];
-
-    protected $casts = [
-        'amount' => 'float',
     ];
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withPivot('amount');
     }
 }

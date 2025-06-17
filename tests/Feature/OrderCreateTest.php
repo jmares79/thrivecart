@@ -14,11 +14,9 @@ class OrderCreateTest extends TestCase
     #[Test]
     public function it_creates_an_order_with_products(): void
     {
-        // Arrange: Create products in the database
-        $product1 = Product::factory()->create(['name' => 'Product 1', 'price' => 100]);
-        $product2 = Product::factory()->create(['name' => 'Product 2', 'price' => 200]);
+        $product1 = Product::factory()->create(['name' => 'Red widget', 'price' => 100]);
+        $product2 = Product::factory()->create(['name' => 'Blue widget', 'price' => 90]);
 
-        // Act: Send a POST request to create an order
         $response = $this->postJson('/api/orders', [
             'description' => 'Test order',
             'products' => [
@@ -27,13 +25,11 @@ class OrderCreateTest extends TestCase
             ],
         ]);
 
-        // Assert: Check the response and database state
-        $response->assertStatus(201)
-                 ->assertJsonStructure(['message', 'order']);
+        $response->assertStatus(201)->assertJsonStructure(['message', 'order']);
 
         $this->assertDatabaseHas('orders', [
             'status' => 'pending',
-            'description' => null,
+            'description' => 'Test order',
         ]);
 
         $this->assertDatabaseHas('order_product', [
