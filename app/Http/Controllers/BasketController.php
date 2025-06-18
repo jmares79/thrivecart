@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\OfferNotFoundException;
 use App\Logic\BasketLogic;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
@@ -22,17 +23,25 @@ class BasketController extends Controller
             ], 403);
         }
 
-        $total = $this->basketLogic->calculateTotal($order);
-        $fee = $this->basketLogic->calculateDelivery($total);
-//        $order->status = 'processed';
-        $order->save();
+        try {
+            $total = $this->basketLogic->calculateTotal($order);
+            $fee = $this->basketLogic->calculateDelivery($total);
 
-        return response()->json([
-            'message' => 'Order processed successfully',
-            'order' => $order,
-            'Order subtotal' => $total,
-            'Delivery fees' => $fee,
-            'Order total' => $total + $fee,
-        ]);
+            $order->status = 'processed';
+            $order->save();
+
+            return response()->json([
+                'message' => 'Order processed successfully',
+                'order' => $order,
+                'Order subtotal' => $total,
+                'Delivery fees' => $fee,
+                'Order total' => $total + $fee,
+            ]);
+        } catch (OfferNotFoundException $e) {
+            return response()->json([
+                'message' => 'Offer not found.',
+                'error' => $e->getMessage(),
+            ], 404);
+        }
     }
 }

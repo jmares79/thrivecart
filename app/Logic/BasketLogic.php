@@ -10,7 +10,7 @@ use App\Models\Order;
 
 class BasketLogic
 {
-    const FREE_DELIVERY = 0.0; // Default free delivery fee
+    const FREE_DELIVERY = 0.0;
 
     /**
      * Calculate the total price of the order, applying offers and deliveries if any.
