@@ -4,11 +4,14 @@ namespace App\Logic;
 
 use App\Exceptions\OfferNotFoundException;
 use App\Logic\Factories\OfferProcessingFactory;
+use App\Models\Delivery;
 use App\Models\Offer;
 use App\Models\Order;
 
 class BasketLogic
 {
+    const FREE_DELIVERY = 0.0; // Default free delivery fee
+
     /**
      * Calculate the total price of the order, applying offers and deliveries if any.
      *
@@ -35,7 +38,6 @@ class BasketLogic
                 }
 
                 $subTotal = $offerStrategy->calculate($product);
-//                dd('SUBTOTAL', $subTotal, 'OFFER', $offer->product_code);
             } else {
                 $subTotal = $product->price * $product->pivot->amount;
             }
@@ -46,4 +48,19 @@ class BasketLogic
         return $total;
     }
 
+    public function calculateDelivery(float $total): float
+    {
+        $fee = self::FREE_DELIVERY;
+
+        // This can be a delivery order calculator, for now and for simplicity we implement here in the logic
+        $deliveriesUnder = Delivery::where('condition', '<=')->orderByDesc('product_amount')->get();
+
+        foreach ($deliveriesUnder as $delivery) {
+            if ($total <= $delivery->product_amount) {
+                return $delivery->fee;
+            }
+        }
+
+        return $fee;
+    }
 }
