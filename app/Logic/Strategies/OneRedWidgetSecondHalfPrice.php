@@ -18,6 +18,7 @@ class OneRedWidgetSecondHalfPrice implements OfferProcessingInterface
         $price = $product->price;
         $productAmount = $product->pivot->amount;
 
+        dump("Product: {$product->name}, Price: {$price}, Amount: {$productAmount}");
         $pairs = intdiv($productAmount, 2);
         $remainder = $productAmount % 2;
 

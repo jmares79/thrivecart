@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Logic;
 
 use App\Exceptions\OfferNotFoundException;
@@ -33,6 +35,7 @@ class BasketLogic
             $offer = $offers->where('product_code', $product->code)->first();
 
             if  ($offer) {
+                dump('APPLYING OFFER: ' . $offer->code);
                 if (! $offerStrategy = OfferProcessingFactory::make($offer->code)) {
                     throw new OfferNotFoundException("Offer not found for product: {$product->code}");
                 }
@@ -57,7 +60,7 @@ class BasketLogic
 
         foreach ($deliveriesUnder as $delivery) {
             if ($total <= $delivery->product_amount) {
-                return $delivery->fee;
+                $fee = $delivery->cost;
             }
         }
 

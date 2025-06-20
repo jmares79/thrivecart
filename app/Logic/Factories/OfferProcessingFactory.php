@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Logic\Factories;
 
 use App\Http\Interfaces\OfferProcessingInterface;
