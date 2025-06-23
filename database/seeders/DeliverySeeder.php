@@ -14,7 +14,7 @@ class DeliverySeeder extends Seeder
         \DB::table('deliveries')->insert([
             ['name' => 'Standard Delivery', 'cost' => 4.95, 'description' => 'Standard delivery', 'product_amount' => 50.00, 'condition' => '<='],
             ['name' => 'Custom Delivery', 'cost' => 2.95, 'description' => 'Custom Delivery', 'product_amount' => 90.00, 'condition' => '<='],
-            ['name' => 'Free Delivery', 'cost' => 9.95, 'description' => 'Free delivery', 'product_amount' => 90.00, 'condition' => '>'],
+            ['name' => 'Free Delivery', 'cost' => 0.00, 'description' => 'Free delivery', 'product_amount' => 90.00, 'condition' => '>'],
         ]);
     }
 }

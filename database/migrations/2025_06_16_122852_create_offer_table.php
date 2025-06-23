@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('code')->unique();
 
             $table->string('product_code');
-            $table->foreign('product_code')->references('code')->on('products');
 
             $table->timestamps();
         });
