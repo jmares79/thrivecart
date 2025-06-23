@@ -11,8 +11,7 @@
 - [Setup Instructions](#setup-instructions)
 - [Structure & Usage](#structure--usage)
 - [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
+- [Disclaimer](#disclaimer)
 
 ---
 
