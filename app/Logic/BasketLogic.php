@@ -35,7 +35,6 @@ class BasketLogic
             $offer = $offers->where('product_code', $product->code)->first();
 
             if  ($offer) {
-                dump('APPLYING OFFER: ' . $offer->code);
                 if (! $offerStrategy = OfferProcessingFactory::make($offer->code)) {
                     throw new OfferNotFoundException("Offer not found for product: {$product->code}");
                 }
